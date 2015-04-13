@@ -40,6 +40,7 @@ public class NewsReaderActivity extends ActionBarActivity {
 
         if (id == R.id.action_refresh)
         {
+            cacheManager.clearMemoryCache();
             fetchAndDisplayData(false);
         }
 

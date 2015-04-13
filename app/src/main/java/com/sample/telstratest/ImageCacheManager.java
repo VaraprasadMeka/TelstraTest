@@ -30,4 +30,9 @@ public class ImageCacheManager {
     {
         return mMemoryCache.get(key);
     }
+
+    public void clearMemoryCache()
+    {
+        mMemoryCache.evictAll();
+    }
 }
