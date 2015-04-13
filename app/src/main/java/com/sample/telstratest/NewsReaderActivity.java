@@ -10,6 +10,8 @@ import android.view.MenuItem;
 public class NewsReaderActivity extends ActionBarActivity {
 
     Context context;
+    private int cacheSizeInKB = 0;
+    public ImageCacheManager cacheManager;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +19,10 @@ public class NewsReaderActivity extends ActionBarActivity {
         setContentView(R.layout.activity_news_reader);
         context = this;
         fetchAndDisplayData(true);
+
+        int maxMemory = (int)(Runtime.getRuntime().maxMemory()/1024);
+        cacheSizeInKB = maxMemory/8;
+        cacheManager = new ImageCacheManager(cacheSizeInKB);
     }
 
 

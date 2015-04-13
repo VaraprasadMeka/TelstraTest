@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.util.LruCache;
 import android.widget.ImageView;
 
 import java.io.InputStream;
@@ -75,6 +76,7 @@ public class ImageDownloadTask extends AsyncTask<String, Void, Bitmap>{
                     if (inputStream != null)
                     {
                         bitmap = BitmapFactory.decodeStream(inputStream);
+                        ((NewsReaderActivity)context).cacheManager.addBitmapToMemoryCache(url,bitmap);
                     }
                 }
             }

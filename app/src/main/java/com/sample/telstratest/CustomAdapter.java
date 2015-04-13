@@ -2,6 +2,7 @@ package com.sample.telstratest;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
@@ -66,15 +67,25 @@ public class CustomAdapter extends ArrayAdapter<DataContainer> {
         if(!newsList.get(position).imageLocation.equalsIgnoreCase("null"))
         {
             viewHolder.imageView.setVisibility(View.VISIBLE);
-            viewHolder.imageView.setImageBitmap(
-                    BitmapFactory.decodeResource(context.getResources(),R.drawable.loading_image));
-
             ViewGroup.MarginLayoutParams params =
                     (ViewGroup.MarginLayoutParams)viewHolder.descriptionView.getLayoutParams();
             params.rightMargin = descriptionView_margin;
 
-            new ImageDownloadTask(context,viewHolder.imageView).executeOnExecutor(
-                    AsyncTask.THREAD_POOL_EXECUTOR, newsList.get(position).imageLocation);
+            Bitmap bitmapFromCache = ((NewsReaderActivity)context).cacheManager.
+                    getBitmapFromMemoryCache(newsList.get(position).imageLocation);
+
+            if(bitmapFromCache == null)
+            {
+                viewHolder.imageView.setImageBitmap(
+                        BitmapFactory.decodeResource(context.getResources(),R.drawable.loading_image));
+
+                new ImageDownloadTask(context,viewHolder.imageView).executeOnExecutor(
+                        AsyncTask.THREAD_POOL_EXECUTOR, newsList.get(position).imageLocation);
+            }
+            else
+            {
+                viewHolder.imageView.setImageBitmap(bitmapFromCache);
+            }
         }
         else
         {
