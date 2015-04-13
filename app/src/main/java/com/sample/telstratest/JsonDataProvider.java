@@ -16,6 +16,7 @@ import java.util.List;
 
 /**
  * Created by Vara on 4/13/2015.
+ * This class downloads JSON message from the Cloud API and parses it using Google Gson library.
  */
 public class JsonDataProvider {
 

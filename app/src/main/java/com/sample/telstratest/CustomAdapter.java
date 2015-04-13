@@ -16,6 +16,10 @@ import java.util.List;
 
 /**
  * Created by Vara on 4/13/2015.
+ * This class provides custom layout to the ListView. It also initiates image downloads in the
+ * background for those views which are in focus. If the image is downloaded already and available
+ * in memory cache, then it is loaded to ImageView from cache and will not be downloaded from
+ * network again.
  */
 public class CustomAdapter extends ArrayAdapter<DataContainer> {
 

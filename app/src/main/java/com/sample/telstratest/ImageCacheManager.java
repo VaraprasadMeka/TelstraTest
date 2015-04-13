@@ -5,6 +5,8 @@ import android.util.LruCache;
 
 /**
  * Created by Vara on 4/14/2015.
+ * This class exposes methods to define memory cache, add Bitmap images to the cache, retrieve
+ * images from the cache and clear the cache.
  */
 public class ImageCacheManager {
 

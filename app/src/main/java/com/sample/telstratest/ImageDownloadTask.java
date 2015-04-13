@@ -15,6 +15,8 @@ import java.net.URL;
 
 /**
  * Created by Vara on 4/13/2015.
+ * This class is an AsyncTask which downloads images from the network, stores them in the cache
+ * using ImageCacheManager class and displays a scaled version of image in the ListView.
  */
 public class ImageDownloadTask extends AsyncTask<String, Void, Bitmap>{
 

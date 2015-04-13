@@ -11,6 +11,9 @@ import java.util.ArrayList;
 
 /**
  * Created by Vara on 4/13/2015.
+ * This class is an AsyncTask which displays progress dialog while downloading and parsing JSON
+ * message from the network. After the JSON message is parsed, it creates a custom adapter to the
+ * ListView and set the data to the adapter.
  */
 public class NewsDownloadTask extends AsyncTask<Void, Void, Integer> {
 
