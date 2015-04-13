@@ -31,7 +31,7 @@ public class NewsDownloadTask extends AsyncTask<Void, Void, Integer> {
     protected void onPreExecute() {
         super.onPreExecute();
         if(showProgress)
-            progressDialog = ProgressDialog.show(context, "Pactera Interview Test", "Loading...");
+            progressDialog = ProgressDialog.show(context, "Telstra Interview Test", "Loading...");
         else
             Toast.makeText(context, "Refreshing the content", Toast.LENGTH_SHORT).show();
     }

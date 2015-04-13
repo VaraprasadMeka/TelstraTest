@@ -2,6 +2,8 @@ package com.sample.telstratest;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -10,6 +12,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Vara on 4/13/2015.
@@ -39,19 +42,9 @@ public class JsonDataProvider {
             int responseCode = httpConnection.getResponseCode();
 
             if(responseCode == 200)
-            {
-                BufferedReader bufferedReader = new BufferedReader(
+                returnCode = parseResponseWithGson(
                         new InputStreamReader(httpConnection.getInputStream()));
-                StringBuilder stringBuilder = new StringBuilder();
-                String line;
 
-                while((line = bufferedReader.readLine()) != null)
-                {
-                    stringBuilder.append(line+"\n");
-                }
-                bufferedReader.close();
-                returnCode = parseJsonMessage(stringBuilder.toString());
-            }
             httpConnection.disconnect();
         }
         catch(Exception e)
@@ -62,34 +55,42 @@ public class JsonDataProvider {
         return returnCode;
     }
 
-    private int parseJsonMessage(String jsonString)
+    private int parseResponseWithGson(InputStreamReader reader)
     {
         int returnCode = -1;
 
-        try
-        {
-            JSONObject jsonObj = new JSONObject(jsonString);
-            MAIN_TITLE = jsonObj.getString("title");
+        Gson gsonObject = new Gson();
+        JsonResponse response = gsonObject.fromJson(reader,JsonResponse.class);
 
-            JSONArray articlesArray = jsonObj.getJSONArray("rows");
-            for(int i=0; i<articlesArray.length(); i++)
+        if(response != null)
+        {
+            MAIN_TITLE = response.title;
+
+            List<JsonResponse.Row> rows = response.rows;
+            String articleTitle;
+            String articleDescription;
+            String articleImageLocation;
+
+            for(int i=0; i<rows.size(); i++)
             {
-                JSONObject article = articlesArray.getJSONObject(i);
-                String title = article.getString("title").trim();
+                if(rows.get(i).title != null)
+                {
+                    articleTitle = rows.get(i).title.trim();
+                    if(rows.get(i).description == null)
+                        articleDescription = "null";
+                    else
+                        articleDescription = rows.get(i).description.trim();
+                    if(rows.get(i).imageHref == null)
+                        articleImageLocation = "null";
+                    else
+                        articleImageLocation = rows.get(i).imageHref.trim();
 
-                if(title.equalsIgnoreCase("null"))
-                    continue;
-
-                String description = article.getString("description").trim();
-                String imageLocation = article.getString("imageHref");
-
-                list.add(new DataContainer(title, description, imageLocation));
+                    list.add(new DataContainer(
+                            articleTitle, articleDescription, articleImageLocation));
+                }
             }
+
             returnCode = 0;
-        }
-        catch(Exception e)
-        {
-            Log.e("NewsReader","Error in parsing JSON message");
         }
 
         return returnCode;
